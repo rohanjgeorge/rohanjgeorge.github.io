@@ -1,26 +1,342 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Rohan's Page'</title>
-
+    <title>Rohan George | Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Hi Everyone</h1>
-    <p>My name is Rohan George. </br> <img src="Images\Rohan.jpeg" al="LinkedIn" width="20%" height="20%"> </br>Checkout
-        my linkedIn Profile below</br></p>
-    <p><a href="https://www.linkedin.com/in/rohan-joseph-george/"> <img src="Images\Icons\LinkedIn.png" al="LinkedIn"
-                width="2%" height="2%"> </a></p>
 
-    Reach out to me for:
+    <!-- Top Section -->
+    <div class="container-fluid bg-dark text-white py-5">
+        <div class="row align-items-center">
+            <!-- Profile Image -->
+            <div class="col-md-3 text-center">
+                <img src="Images/Rohan.jpeg" alt="Profile Picture"
+                     class="img-fluid rounded-circle"
+                     style="max-width: 250px; height: auto; border: 5px solid #FFFFFF; ">
+            </div>
 
-    <a href="pythonPortfolio.html"> View python portfolio</a>
+            <!-- Profile Details -->
+            <div class="col-md-9">
+                <h1 class="fw-bold">Rohan George</h1>
+                <p class="lead mb-2">Aspiring Video Game Developer and Producer | Delivery Manager | Tech Enthusiast</p>
+                <p class="mb-1"><strong>Education:</strong></p>
+                <ul class="list-unstyled">
+                    <li>B.Tech - Electrical and Electronics Engineering, Mar Athanasius College of Engineering</li>
+                    <li>MBA - Indian Institute of Management Udaipur</li>
+                </ul>
+                <p class="mb-0"><strong>Certifications:</strong> Certified Scrum Master</p>
+            </div>
+        </div>
+    </div>
 
-    <ol>
-        <li>Job openeings</li>
-        <li>Besoke Product Development</li>
-        <li>Web Development</li>
-        <li>General Consulting</li>
-    </ol>
+    <!-- Bottom Section -->
+    <div class="container mt-5">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="portfolioTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="games-tab" data-bs-toggle="tab" data-bs-target="#games" role="tab">Game Projects</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience" role="tab">Professional Experience</button>
+            </li>
+        </ul>
+        <div class="tab-content mt-3">
+            <!-- Game Projects -->
+            <div class="tab-pane fade show active" id="games" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="game-thumbnail.jpg" class="card-img-top" alt="Game Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Space Invaders</h5>
+                                <p class="card-text">A remake of the classic game Space Invaders.</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">C++</span>
+                                    <span class="badge bg-secondary rounded-pill">SFML</span>
+                                </div>
+                                <a href="https://github.com/rohanjgeorge/Space-Invaders" class="btn btn-primary">View Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="game-thumbnail.jpg" class="card-img-top" alt="Game Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Hunt the Duck</h5>
+                                <p class="card-text">A modern remake of the classic game "Duck Hunt".</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">C++</span>
+                                    <span class="badge bg-secondary rounded-pill">SFML</span>
+                                </div>
+                                <a href="https://github.com/rohanjgeorge/MAT-DunkHunt" class="btn btn-primary">View Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="game-thumbnail.jpg" class="card-img-top" alt="Game Image">
+                            <div class="card-body">
+                                <h5 class="card-title">2D Platformer</h5>
+                                <p class="card-text">A modern remake of the classic game "Duck Hunt".</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">C#</span>
+                                    <span class="badge bg-secondary rounded-pill">Unity</span>
+                                </div>
+                                <a href="https://github.com/rohanjgeorge/2D-Platformer-Game" class="btn btn-primary">View Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="game-thumbnail.jpg" class="card-img-top" alt="Game Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Snake Co-Op 2D</h5>
+                                <p class="card-text">A modern remake of the classic game "Duck Hunt".</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">C#</span>
+                                    <span class="badge bg-secondary rounded-pill">Unity</span>
+                                </div>
+                                <a href="https://github.com/rohanjgeorge/CoOpSnakeGame" class="btn btn-primary">View Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="game-thumbnail.jpg" class="card-img-top" alt="Game Image">
+                            <div class="card-body">
+                                <h5 class="card-title">Stick Man Heist</h5>
+                                <p class="card-text">A modern remake of the classic game "Duck Hunt".</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">C#</span>
+                                    <span class="badge bg-secondary rounded-pill">Unity</span>
+                                </div>
+                                <a href="https://github.com/rohanjgeorge/StickManHeist" class="btn btn-primary">View Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Repeat for other games -->
+                </div>
+            </div>
+
+            <!-- Professional Experience -->
+            <div class="tab-pane fade" id="experience" role="tabpanel">
+
+                <div class="card mb-4 position-relative">
+                    <div class="card-body">
+                        <!-- Total Duration -->
+                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 1.8 Years
+                        </span>
+
+                        <!-- Role and Company -->
+                        <h5 class="card-title">Project and Program Management Consultant</h5>
+                        <h6 class="card-subtitle mb-3 text-primary">Company: Thoucentric, Client: Unilever</h6>
+
+                        <!-- Technology and Skills -->
+                        <h6><strong>Technology/Skills:</strong></h6>
+                        <div class="mb-3">
+                            <span class="badge bg-primary rounded-pill">Delivery Management</span>
+                            <span class="badge bg-secondary rounded-pill">Product Management</span>
+                            <span class="badge bg-success rounded-pill">Vendor Management</span>
+                            <span class="badge bg-danger rounded-pill">AI/ML Project Management</span>
+                            <span class="badge bg-warning text-dark rounded-pill">Agile</span>
+                            <span class="badge bg-info text-dark rounded-pill">Jira</span>
+                        </div>
+                        <!-- Role 0 -->
+                        <h6 class="fw-bold">PMO - IT Procurement Strategy</h6>
+                        <p class="text-muted">November 2024 – Present</p>
+                        <ul>
+                            <li>Lead cross-functional operations for an AI/ML-based forecasting tool, enhancing demand planning processes.</li>
+                            <li>Managed model runs, incident responses, and service requests, ensuring on-time-in-full delivery of weekly forecasts.</li>
+                            <li>Collaborated with planning leads across 12+ FMCG categories and 4 countries to improve forecast accuracy and implement no-touch forecasting.</li>
+                        </ul>
+
+                        <!-- Separator Line -->
+                        <hr class="my-3">
+
+                        <!-- Role 1 -->
+                        <h6 class="fw-bold">AI/ML Operations Manager</h6>
+                        <p class="text-muted">April 2024 – October 2024</p>
+                        <ul>
+                            <li>Lead cross-functional operations for an AI/ML-based forecasting tool, enhancing demand planning processes.</li>
+                            <li>Managed model runs, incident responses, and service requests, ensuring on-time-in-full delivery of weekly forecasts.</li>
+                            <li>Collaborated with planning leads across 12+ FMCG categories and 4 countries to improve forecast accuracy and implement no-touch forecasting.</li>
+                        </ul>
+
+                        <!-- Separator Line -->
+                        <hr class="my-3">
+
+                        <!-- Role 2 -->
+                        <h6 class="fw-bold">Product/Technical Delivery Manager</h6>
+                        <p class="text-muted">June 2023 – March 2024</p>
+                        <ul>
+                            <li>Served as the Delivery Manager for an AI/ML Forecasting project for UKI, DACH, and France regions.</li>
+                            <li>Managed data science vendor teams to execute AI/ML transformation projects, overseeing the entire project lifecycle from conception to customer adoption.</li>
+                            <li>Led product development, requirements gathering, prioritization, and execution for model enhancements.</li>
+                            <li>Engaged and managed relationships with customers, engineering, and leadership teams.</li>
+                            <li>Conducted weekly and monthly governances to review KPIs and drive over 30 initiatives for strategic improvements.</li>
+                            <li>Developed a comprehensive understanding of AI/ML-based demand planning methodologies.</li>
+                        </ul>
+
+                        <!-- Project Impacts -->
+                        <hr>
+                        <h6 class="text-success"><strong>Project Impacts:</strong></h6>
+                        <p>Led the successful adoption of Jira in DACH and UKI regions and facilitated rollout to other European regions.</p>
+                        <p>Successfully deployed the AI/ML transformation project in the DACH region, spanning 4 categories and 3 countries, driving AI/ML adoption and no-touch forecasting for over 5000 GTIN-Customer combinations.</p>
+                        <p>Deployed AI/ML-based forecasting automation in France, successfully launching the tool across 12 FMCG categories to enhance demand accuracy and move towards no-touch forecasting.</p>
+                    </div>
+                </div>
+
+
+                <div class="card mb-4 position-relative">
+                    <div class="card-body">
+                        <!-- Duration -->
+                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 1.1 Years
+                        </span>
+
+                        <!-- Role and Company -->
+                        <h5 class="card-title">Account Lead – Delivery Manager</h5>
+                        <h6 class="card-subtitle mb-3 text-primary">Company: Indegene, Client: Boehringer Ingelheim</h6>
+
+                        <!-- Technology and Skills -->
+                        <h6><strong>Technology/Skills:</strong></h6>
+                        <div class="mb-3">
+                            <span class="badge bg-primary rounded-pill">Drupal CMS</span>
+                            <span class="badge bg-secondary rounded-pill">Figma/Sketch</span>
+                            <span class="badge bg-success rounded-pill">Zeplin</span>
+                            <span class="badge bg-danger rounded-pill">Qualtrics</span>
+                            <span class="badge bg-warning text-dark rounded-pill">Delivery Management</span>
+                            <span class="badge bg-info text-dark rounded-pill">Project Management</span>
+                            <span class="badge bg-dark rounded-pill">GTM Strategy</span>
+                        </div>
+
+                        <!-- Responsibilities -->
+                        <ul>
+                            <li>Established the Offshore Delivery Manager role for web and portal Go-To-Market solutions within 30 days.</li>
+                            <li>Served as internal product owner for client engagement, content, design, development, and regulatory approvals; handled a portfolio of €720K in FY 22-23.</li>
+                            <li>Hands-on experience with Veeva PromoMats, MedComms, and end-to-end Medical Legal & Regulatory review processes.</li>
+                            <li>Drove process improvements, reducing cycle times, improving requirement gathering, and minimizing defects using Jira and Kanban.</li>
+                            <li>Performed stakeholder and risk management activities across 11 brands involving marketers, vendors, designers, and developers.</li>
+                            <li>Identified 6 new business opportunities to increase revenue and meet engagement needs.</li>
+                            <li>Delivered 37 website projects and consulting services for 6 vendors in FY 22-23.</li>
+                        </ul>
+
+                        <!-- Divider Line -->
+                        <hr>
+
+                        <!-- Project Impacts -->
+                        <h6 class="text-success"><strong>Project Impacts:</strong></h6>
+                        <p>Reduced average project cycle time from 5 months to 3 months and delivery defects from 50% to 10%.</p>
+                        <p>Received appreciation from the Director of GTM services for streamlining the website delivery service.</p>
+                        <p>Achieved 110% of target revenue for FY 2022-2023.</p>
+                    </div>
+                </div>
+
+
+                <div class="card mb-4 position-relative">
+                    <div class="card-body">
+                        <!-- Duration -->
+                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 11 Months
+                        </span>
+
+                        <!-- Role and Company -->
+                        <h5 class="card-title">Associate Solution Leader - Product Manager</h5>
+                        <h6 class="card-subtitle mb-3 text-primary">Company: Brane Enterprises</h6>
+
+                        <!-- Technology and Skills -->
+                        <h6><strong>Technology/Skills:</strong></h6>
+                        <div class="mb-3">
+                            <span class="badge bg-primary rounded-pill">Product Management</span>
+                            <span class="badge bg-secondary rounded-pill">Stakeholder Management</span>
+                            <span class="badge bg-success rounded-pill">Product Strategy and Roadmap</span>
+                            <span class="badge bg-danger rounded-pill">Wireframing using Mockplus</span>
+                            <span class="badge bg-warning text-dark rounded-pill">Miro</span>
+                            <span class="badge bg-info text-dark rounded-pill">Database Schema Development</span>
+                        </div>
+
+                        <!-- Responsibilities -->
+                        <ul>
+                            <li>Covered the SDLC cycle of a SaaS customizable multi-sided e-commerce platform from planning to development.</li>
+                            <li>Conducted market research and industry analysis on 18 competitors to set benchmarks for product design.</li>
+                            <li>Established the product vision and value proposition, produced a proof-of-concept wireframe, and stakeholder pitch deck.</li>
+                            <li>Identified 7 domain modules, constructed 638 use cases with test cases, and crafted a product roadmap with release timelines.</li>
+                            <li>Designed an entity model conforming to best-in-class ideas from the common data model.</li>
+                            <li>Developed a workflow for the solution and managed four leaders for implementation using a low-code/no-code platform.</li>
+                        </ul>
+
+                        <!-- Divider Line -->
+                        <hr>
+
+                        <!-- Project Impacts -->
+                        <h6 class="text-success"><strong>Project Impacts:</strong></h6>
+                        <p>Developed the product vision and roadmap for a SaaS platform from 0.</p>
+                        <p>Received a memento from reporting managers for contributions to product development.</p>
+                    </div>
+                </div>
+
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <!-- Duration -->
+                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 2 Years
+                        </span>
+
+                        <!-- Role and Company -->
+                        <h5 class="card-title">Product Development Engineer</h5>
+                        <h6 class="card-subtitle mb-3 text-primary">Company: Envestnet Asset Management</h6>
+
+                        <!-- Technology and Skills -->
+                        <h6><strong>Technology/Skills:</strong></h6>
+                        <div class="mb-3">
+                            <span class="badge bg-primary rounded-pill">Product Development</span>
+                            <span class="badge bg-secondary rounded-pill">Java</span>
+                            <span class="badge bg-success rounded-pill">Javascript</span>
+                            <span class="badge bg-danger rounded-pill">CSS</span>
+                            <span class="badge bg-warning text-dark rounded-pill">HTML</span>
+                            <span class="badge bg-info text-dark rounded-pill">SQL</span>
+                            <span class="badge bg-dark rounded-pill">Business Analysis</span>
+                            <span class="badge bg-light text-dark rounded-pill">REST API</span>
+                            <span class="badge bg-primary rounded-pill">Agile</span>
+                            <span class="badge bg-secondary rounded-pill">Jira</span>
+                        </div>
+
+                        <!-- Responsibilities -->
+                        <ul>
+                            <li>Developed code for turnkey asset management software used by over 2000 financial firms in 15 countries.</li>
+                            <li>Worked with business analysts across India and U.S to create solutions and reviewed functional requirements.</li>
+                            <li>Implemented 15 RESTful APIs to extend the product functionalities to enhance and improve client integration.</li>
+                            <li>Proactive member of a 17-member Agile project team; Prior experience with Scrum and Jira for project management.</li>
+                        </ul>
+
+                        <!-- Divider Line -->
+                        <hr>
+
+                        <!-- Project Impacts -->
+                        <h6 class="text-success"><strong>Project Impacts:</strong></h6>
+                        <p>Reduced the processing time from 3 hours to 5 minutes after automating the billing reconciliation for a client.</p>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
