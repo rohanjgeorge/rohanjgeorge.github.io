@@ -138,7 +138,7 @@
                             <img src="Images/PingPong.PNG" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">Ping Pong</h5>
-                                <p class="card-text">Remake fo the classic Ping Pong game using SFML. Play with your friend and see who is the Ping Pong Master!!"</p>
+                                <p class="card-text">Remake fo the classic Ping Pong game using SFML. Play with your friend and see who is the Ping Pong Master!"</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
@@ -146,6 +146,7 @@
                                     <span class="badge bg-secondary rounded-pill">SFML</span>
                                 </div>
                                 <a href="https://github.com/rohanjgeorge/Pong-SFML" class="btn btn-primary">View Code</a>
+                                <button class="btn btn-success play-video-btn" data-video="videos/PingPongVideo.mp4" data-bs-toggle="modal" data-bs-target="#videoModal">Play Video</button>
                             </div>
                         </div>
                     </div>
@@ -363,6 +364,47 @@
 
         </div>
     </div>
+
+    <!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Gameplay Video</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <video id="videoPlayer" width="100%" controls>
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to Update Video Dynamically -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const videoModal = document.getElementById('videoModal');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoSource = videoPlayer.querySelector("source");
+
+        document.querySelectorAll(".play-video-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                const videoUrl = this.getAttribute("data-video");
+                videoSource.src = videoUrl;
+                videoPlayer.load(); // Reload the video source
+                videoPlayer.play(); // Autoplay the video when the modal opens
+            });
+        });
+
+        videoModal.addEventListener("hidden.bs.modal", function() {
+            videoPlayer.pause(); // Stop video playback when modal is closed
+            videoPlayer.currentTime = 0; // Reset video to the start
+        });
+    });
+</script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
