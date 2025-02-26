@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Rohan George | Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -7,10 +8,75 @@
 <style>
     .card-img-top {
         width: 100%;
-        height: 200px; /* Set a uniform height */
-        object-fit: cover; /* Ensures the image scales and crops proportionally */
+        height: 200px;
+        /* Set a uniform height */
+        object-fit: cover;
+        /* Ensures the image scales and crops proportionally */
+    }
+
+    .card {
+        height: 100%;
+        /* Ensures all cards have equal height */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        flex-grow: 1;
+        /* Makes the body expand to fill the card */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        /* Ensures consistent spacing */
+    }
+
+    .card-text {
+        flex-grow: 1;
+        /* Ensures text fills available space */
+    }
+
+    .card-buttons {
+        display: flex;
+        gap: 5px;
+        /* Keeps buttons from sticking together */
     }
 </style>
+
+    <!-- Filter script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll(".skill-checkbox");
+        const clearFilter = document.getElementById("clearFilter");
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", filterProjects);
+        });
+
+        clearFilter.addEventListener("click", function () {
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+            filterProjects();
+        });
+
+        function filterProjects() {
+            let selectedSkills = Array.from(checkboxes)
+                                      .filter(checkbox => checkbox.checked)
+                                      .map(checkbox => checkbox.value);
+            let projects = document.querySelectorAll(".col-md-4");
+
+            projects.forEach(project => {
+                let projectSkills = Array.from(project.querySelectorAll(".badge"))
+                                         .map(badge => badge.textContent.trim());
+
+                if (selectedSkills.length === 0 || selectedSkills.some(skill => projectSkills.includes(skill))) {
+                    project.style.display = "block";
+                } else {
+                    project.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
+
 <body>
 
     <!-- Top Section -->
@@ -18,9 +84,8 @@
         <div class="row align-items-center">
             <!-- Profile Image -->
             <div class="col-md-3 text-center">
-                <img src="Images/Rohan.jpeg" alt="Profile Picture"
-                     class="img-fluid rounded-circle"
-                     style="max-width: 250px; height: auto; border: 5px solid #FFFFFF; ">
+                <img src="Images/Rohan.jpeg" alt="Profile Picture" class="img-fluid rounded-circle"
+                    style="max-width: 250px; height: auto; border: 5px solid #FFFFFF; ">
             </div>
 
             <!-- Profile Details -->
@@ -43,29 +108,55 @@
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="portfolioTabs" role="tablist">
             <li class="nav-item">
-                <button class="nav-link active" id="games-tab" data-bs-toggle="tab" data-bs-target="#games" role="tab">Game Projects</button>
+                <button class="nav-link active" id="games-tab" data-bs-toggle="tab" data-bs-target="#games"
+                    role="tab">Game Projects</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience" role="tab">Professional Experience</button>
+                <button class="nav-link" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience"
+                    role="tab">Professional Experience</button>
             </li>
         </ul>
         <div class="tab-content mt-3">
             <!-- Game Projects -->
             <div class="tab-pane fade show active" id="games" role="tabpanel">
+
+
+                <!-- Filter Dropdown (Right-Aligned) -->
+                <div class="d-flex justify-content-end mb-3">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="skillDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filter by Tech
+                        </button>
+                        <ul class="dropdown-menu p-3" aria-labelledby="skillDropdown">
+                            <li><input type="checkbox" class="skill-checkbox" value="C++"> C++</li>
+                            <li><input type="checkbox" class="skill-checkbox" value="SFML"> SFML</li>
+                            <li><input type="checkbox" class="skill-checkbox" value="C#"> C#</li>
+                            <li><input type="checkbox" class="skill-checkbox" value="Unity"> Unity</li>
+                            <li><input type="checkbox" class="skill-checkbox" value="Light Component"> Light</li>
+                        </ul>
+                    </div>
+                    <button id="clearFilter" class="btn btn-link ms-2">Clear Filter</button>
+                </div>
+
+
                 <div class="row g-4">
                     <div class="col-md-4">
                         <div class="card">
                             <img src="Images/SpaceInvader.jpeg" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">Space Invaders</h5>
-                                <p class="card-text">A modern remake of the classic Space Invaders game, developed as part of my OUTSCAL Game Development program using C++ and SFML.</p>
+                                <p class="card-text">A modern remake of the classic Space Invaders game, developed as
+                                    part of my OUTSCAL Game Development program using C++ and SFML.</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
                                     <span class="badge bg-primary rounded-pill">C++</span>
                                     <span class="badge bg-secondary rounded-pill">SFML</span>
                                 </div>
-                                <a href="https://github.com/rohanjgeorge/Space-Invaders" class="btn btn-primary">View Code</a>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/rohanjgeorge/Space-Invaders"
+                                        class="btn btn-primary">View Code</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -74,14 +165,18 @@
                             <img src="Images/HuntTheDuck.PNG" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">Hunt the Ducks</h5>
-                                <p class="card-text">A modern remake of the classic game "Duck Hunt," developed as part of my OUTSCAL Game Development program using C++ and SFML.</p>
+                                <p class="card-text">A modern remake of the classic game "Duck Hunt," developed as part
+                                    of my OUTSCAL Game Development program using C++ and SFML.</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
                                     <span class="badge bg-primary rounded-pill">C++</span>
                                     <span class="badge bg-secondary rounded-pill">SFML</span>
                                 </div>
-                                <a href="https://github.com/rohanjgeorge/MAT-DunkHunt" class="btn btn-primary">View Code</a>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/rohanjgeorge/MAT-DunkHunt" class="btn btn-primary">View
+                                        Code</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -90,14 +185,18 @@
                             <img src="Images/2DPlatformer.PNG" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">2D Platformer</h5>
-                                <p class="card-text">A 2D platformer game made using Unity. You can control an adventurer who navigates obstacles to reach goals.</p>
+                                <p class="card-text">A 2D platformer game made using Unity. You can control an
+                                    adventurer who navigates obstacles to reach goals.</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
                                     <span class="badge bg-primary rounded-pill">C#</span>
                                     <span class="badge bg-secondary rounded-pill">Unity</span>
                                 </div>
-                                <a href="https://github.com/rohanjgeorge/2D-Platformer-Game" class="btn btn-primary">View Code</a>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/rohanjgeorge/2D-Platformer-Game"
+                                        class="btn btn-primary">View Code</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,14 +205,18 @@
                             <img src="Images/Snake2D.PNG" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">Snake Co-Op 2D</h5>
-                                <p class="card-text">A modern remake of the classic "Snake"" game with the added feature to compete against a friend in Co-Op mode.</p>
+                                <p class="card-text">A modern remake of the classic "Snake"" game with the added feature
+                                    to compete against a friend in Co-Op mode.</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
                                     <span class="badge bg-primary rounded-pill">C#</span>
                                     <span class="badge bg-secondary rounded-pill">Unity</span>
                                 </div>
-                                <a href="https://github.com/rohanjgeorge/CoOpSnakeGame" class="btn btn-primary">View Code</a>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/rohanjgeorge/CoOpSnakeGame" class="btn btn-primary">View
+                                        Code</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -122,14 +225,19 @@
                             <img src="Images/StickManHeist.PNG" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">Stick Man Heist</h5>
-                                <p class="card-text">My first game jam project - a stealth game following the theme 'Avoid the Light'. Play and try to steal the painting without getting caught."</p>
+                                <p class="card-text">My first game jam project - a stealth game following the theme
+                                    'Avoid the Light'. Play and try to steal the painting without getting caught."</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
                                     <span class="badge bg-primary rounded-pill">C#</span>
                                     <span class="badge bg-secondary rounded-pill">Unity</span>
+                                    <span class="badge bg-success rounded-pill">Light Component</span>
                                 </div>
-                                <a href="https://github.com/rohanjgeorge/StickManHeist" class="btn btn-primary">View Code</a>
+                                <div class="card-buttons">
+                                    <a href="https://github.com/rohanjgeorge/StickManHeist" class="btn btn-primary">View
+                                        Code</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -138,16 +246,21 @@
                             <img src="Images/PingPong.png" class="card-img-top" alt="Game Image">
                             <div class="card-body">
                                 <h5 class="card-title">Ping Pong</h5>
-                                <p class="card-text">Remake fo the classic Ping Pong game using SFML. Play with your friend and see who is the Ping Pong Master!"</p>
+                                <p class="card-text">Remake fo the classic Ping Pong game using SFML. Play with your
+                                    friend and see who is the Ping Pong Master!"</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
                                     <span class="badge bg-primary rounded-pill">C++</span>
                                     <span class="badge bg-secondary rounded-pill">SFML</span>
                                 </div>
-                                <a href="https://github.com/rohanjgeorge/Pong-SFML" class="btn btn-primary">View Code</a>
-                                <button class="btn btn-success play-video-btn" data-video="Videos/PingPongVideo.mp4" data-bs-toggle="modal" data-bs-target="#videoModal">Play Video</button>
-                            </div>0
+                                <div class="card-buttons">
+                                    <a href="https://github.com/rohanjgeorge/Pong-SFML" class="btn btn-primary">View
+                                        Code</a>
+                                    <button class="btn btn-success play-video-btn" data-video="Videos/PingPongVideo.mp4"
+                                        data-bs-toggle="modal" data-bs-target="#videoModal">Play Video</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Repeat for other games -->
@@ -163,7 +276,8 @@
                 <div class="card mb-4 position-relative">
                     <div class="card-body">
                         <!-- Total Duration -->
-                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                        <span
+                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
                             Duration: 1.8 Years
                         </span>
 
@@ -186,8 +300,10 @@
                         <p class="text-muted">November 2024 � Present</p>
                         <ul>
                             <li>Working as the PMO for the IT Procurement Strategy team at Unilever</li>
-                            <li>Oversee the overall program management for 4 strategic programs aimed at optimizing procurement operations</li>
-                            <li>Familiar with budgeting and financial oversight for programs with a total value of approximately �6 million</li>
+                            <li>Oversee the overall program management for 4 strategic programs aimed at optimizing
+                                procurement operations</li>
+                            <li>Familiar with budgeting and financial oversight for programs with a total value of
+                                approximately �6 million</li>
                         </ul>
 
                         <!-- Separator Line -->
@@ -197,9 +313,12 @@
                         <h6 class="fw-bold">AI/ML Operations Manager</h6>
                         <p class="text-muted">April 2024 � October 2024</p>
                         <ul>
-                            <li>Lead cross-functional operations for an AI/ML-based forecasting tool, enhancing demand planning processes.</li>
-                            <li>Managed model runs, incident responses, and service requests, ensuring on-time-in-full delivery of weekly forecasts.</li>
-                            <li>Collaborated with planning leads across 12+ FMCG categories and 4 countries to improve forecast accuracy and implement no-touch forecasting.</li>
+                            <li>Lead cross-functional operations for an AI/ML-based forecasting tool, enhancing demand
+                                planning processes.</li>
+                            <li>Managed model runs, incident responses, and service requests, ensuring on-time-in-full
+                                delivery of weekly forecasts.</li>
+                            <li>Collaborated with planning leads across 12+ FMCG categories and 4 countries to improve
+                                forecast accuracy and implement no-touch forecasting.</li>
                         </ul>
 
                         <!-- Separator Line -->
@@ -209,20 +328,30 @@
                         <h6 class="fw-bold">Product/Technical Delivery Manager</h6>
                         <p class="text-muted">June 2023 � March 2024</p>
                         <ul>
-                            <li>Served as the Delivery Manager for an AI/ML Forecasting project for UKI, DACH, and France regions.</li>
-                            <li>Managed data science vendor teams to execute AI/ML transformation projects, overseeing the entire project lifecycle from conception to customer adoption.</li>
-                            <li>Led product development, requirements gathering, prioritization, and execution for model enhancements.</li>
-                            <li>Engaged and managed relationships with customers, engineering, and leadership teams.</li>
-                            <li>Conducted weekly and monthly governances to review KPIs and drive over 30 initiatives for strategic improvements.</li>
-                            <li>Developed a comprehensive understanding of AI/ML-based demand planning methodologies.</li>
+                            <li>Served as the Delivery Manager for an AI/ML Forecasting project for UKI, DACH, and
+                                France regions.</li>
+                            <li>Managed data science vendor teams to execute AI/ML transformation projects, overseeing
+                                the entire project lifecycle from conception to customer adoption.</li>
+                            <li>Led product development, requirements gathering, prioritization, and execution for model
+                                enhancements.</li>
+                            <li>Engaged and managed relationships with customers, engineering, and leadership teams.
+                            </li>
+                            <li>Conducted weekly and monthly governances to review KPIs and drive over 30 initiatives
+                                for strategic improvements.</li>
+                            <li>Developed a comprehensive understanding of AI/ML-based demand planning methodologies.
+                            </li>
                         </ul>
 
                         <!-- Project Impacts -->
                         <hr>
                         <h6 class="text-success"><strong>Project Impacts:</strong></h6>
-                        <p>Led the successful adoption of Jira in DACH and UKI regions and facilitated rollout to other European regions.</p>
-                        <p>Successfully deployed the AI/ML transformation project in the DACH region, spanning 4 categories and 3 countries, driving AI/ML adoption and no-touch forecasting for over 5000 GTIN-Customer combinations.</p>
-                        <p>Deployed AI/ML-based forecasting automation in France, successfully launching the tool across 12 FMCG categories to enhance demand accuracy and move towards no-touch forecasting.</p>
+                        <p>Led the successful adoption of Jira in DACH and UKI regions and facilitated rollout to other
+                            European regions.</p>
+                        <p>Successfully deployed the AI/ML transformation project in the DACH region, spanning 4
+                            categories and 3 countries, driving AI/ML adoption and no-touch forecasting for over 5000
+                            GTIN-Customer combinations.</p>
+                        <p>Deployed AI/ML-based forecasting automation in France, successfully launching the tool across
+                            12 FMCG categories to enhance demand accuracy and move towards no-touch forecasting.</p>
                     </div>
                 </div>
 
@@ -230,7 +359,8 @@
                 <div class="card mb-4 position-relative">
                     <div class="card-body">
                         <!-- Duration -->
-                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                        <span
+                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
                             Duration: 1.1 Years
                         </span>
 
@@ -252,12 +382,18 @@
 
                         <!-- Responsibilities -->
                         <ul>
-                            <li>Established the Offshore Delivery Manager role for web and portal Go-To-Market solutions within 30 days.</li>
-                            <li>Served as internal product owner for client engagement, content, design, development, and regulatory approvals; handled a portfolio of �720K in FY 22-23.</li>
-                            <li>Hands-on experience with Veeva PromoMats, MedComms, and end-to-end Medical Legal & Regulatory review processes.</li>
-                            <li>Drove process improvements, reducing cycle times, improving requirement gathering, and minimizing defects using Jira and Kanban.</li>
-                            <li>Performed stakeholder and risk management activities across 11 brands involving marketers, vendors, designers, and developers.</li>
-                            <li>Identified 6 new business opportunities to increase revenue and meet engagement needs.</li>
+                            <li>Established the Offshore Delivery Manager role for web and portal Go-To-Market solutions
+                                within 30 days.</li>
+                            <li>Served as internal product owner for client engagement, content, design, development,
+                                and regulatory approvals; handled a portfolio of �720K in FY 22-23.</li>
+                            <li>Hands-on experience with Veeva PromoMats, MedComms, and end-to-end Medical Legal &
+                                Regulatory review processes.</li>
+                            <li>Drove process improvements, reducing cycle times, improving requirement gathering, and
+                                minimizing defects using Jira and Kanban.</li>
+                            <li>Performed stakeholder and risk management activities across 11 brands involving
+                                marketers, vendors, designers, and developers.</li>
+                            <li>Identified 6 new business opportunities to increase revenue and meet engagement needs.
+                            </li>
                             <li>Delivered 37 website projects and consulting services for 6 vendors in FY 22-23.</li>
                         </ul>
 
@@ -266,8 +402,10 @@
 
                         <!-- Project Impacts -->
                         <h6 class="text-success"><strong>Project Impacts:</strong></h6>
-                        <p>Reduced average project cycle time from 5 months to 3 months and delivery defects from 50% to 10%.</p>
-                        <p>Received appreciation from the Director of GTM services for streamlining the website delivery service.</p>
+                        <p>Reduced average project cycle time from 5 months to 3 months and delivery defects from 50% to
+                            10%.</p>
+                        <p>Received appreciation from the Director of GTM services for streamlining the website delivery
+                            service.</p>
                         <p>Achieved 110% of target revenue for FY 2022-2023.</p>
                     </div>
                 </div>
@@ -276,7 +414,8 @@
                 <div class="card mb-4 position-relative">
                     <div class="card-body">
                         <!-- Duration -->
-                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                        <span
+                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
                             Duration: 11 Months
                         </span>
 
@@ -297,12 +436,18 @@
 
                         <!-- Responsibilities -->
                         <ul>
-                            <li>Covered the SDLC cycle of a SaaS customizable multi-sided e-commerce platform from planning to development.</li>
-                            <li>Conducted market research and industry analysis on 18 competitors to set benchmarks for product design.</li>
-                            <li>Established the product vision and value proposition, produced a proof-of-concept wireframe, and stakeholder pitch deck.</li>
-                            <li>Identified 7 domain modules, constructed 638 use cases with test cases, and crafted a product roadmap with release timelines.</li>
-                            <li>Designed an entity model conforming to best-in-class ideas from the common data model.</li>
-                            <li>Developed a workflow for the solution and managed four leaders for implementation using a low-code/no-code platform.</li>
+                            <li>Covered the SDLC cycle of a SaaS customizable multi-sided e-commerce platform from
+                                planning to development.</li>
+                            <li>Conducted market research and industry analysis on 18 competitors to set benchmarks for
+                                product design.</li>
+                            <li>Established the product vision and value proposition, produced a proof-of-concept
+                                wireframe, and stakeholder pitch deck.</li>
+                            <li>Identified 7 domain modules, constructed 638 use cases with test cases, and crafted a
+                                product roadmap with release timelines.</li>
+                            <li>Designed an entity model conforming to best-in-class ideas from the common data model.
+                            </li>
+                            <li>Developed a workflow for the solution and managed four leaders for implementation using
+                                a low-code/no-code platform.</li>
                         </ul>
 
                         <!-- Divider Line -->
@@ -319,7 +464,8 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <!-- Duration -->
-                        <span class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                        <span
+                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
                             Duration: 2 Years
                         </span>
 
@@ -344,10 +490,14 @@
 
                         <!-- Responsibilities -->
                         <ul>
-                            <li>Developed code for turnkey asset management software used by over 2000 financial firms in 15 countries.</li>
-                            <li>Worked with business analysts across India and U.S to create solutions and reviewed functional requirements.</li>
-                            <li>Implemented 15 RESTful APIs to extend the product functionalities to enhance and improve client integration.</li>
-                            <li>Proactive member of a 17-member Agile project team; Prior experience with Scrum and Jira for project management.</li>
+                            <li>Developed code for turnkey asset management software used by over 2000 financial firms
+                                in 15 countries.</li>
+                            <li>Worked with business analysts across India and U.S to create solutions and reviewed
+                                functional requirements.</li>
+                            <li>Implemented 15 RESTful APIs to extend the product functionalities to enhance and improve
+                                client integration.</li>
+                            <li>Proactive member of a 17-member Agile project team; Prior experience with Scrum and Jira
+                                for project management.</li>
                         </ul>
 
                         <!-- Divider Line -->
@@ -355,7 +505,8 @@
 
                         <!-- Project Impacts -->
                         <h6 class="text-success"><strong>Project Impacts:</strong></h6>
-                        <p>Reduced the processing time from 3 hours to 5 minutes after automating the billing reconciliation for a client.</p>
+                        <p>Reduced the processing time from 3 hours to 5 minutes after automating the billing
+                            reconciliation for a client.</p>
                     </div>
                 </div>
 
@@ -366,46 +517,47 @@
     </div>
 
     <!-- Video Modal -->
-<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="videoModalLabel">Gameplay Video</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <video id="videoPlayer" width="100%" controls>
-                    <source src="" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="videoModalLabel">Gameplay Video</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <video id="videoPlayer" width="100%" controls>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- JavaScript to Update Video Dynamically -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const videoModal = document.getElementById('videoModal');
-        const videoPlayer = document.getElementById('videoPlayer');
-        const videoSource = videoPlayer.querySelector("source");
+    <!-- JavaScript to Update Video Dynamically -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const videoModal = document.getElementById('videoModal');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoSource = videoPlayer.querySelector("source");
 
-        document.querySelectorAll(".play-video-btn").forEach(button => {
-            button.addEventListener("click", function() {
-                const videoUrl = this.getAttribute("data-video");
-                videoSource.src = videoUrl;
-                videoPlayer.load(); // Reload the video source
-                videoPlayer.play(); // Autoplay the video when the modal opens
+            document.querySelectorAll(".play-video-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const videoUrl = this.getAttribute("data-video");
+                    videoSource.src = videoUrl;
+                    videoPlayer.load(); // Reload the video source
+                    videoPlayer.play(); // Autoplay the video when the modal opens
+                });
+            });
+
+            videoModal.addEventListener("hidden.bs.modal", function () {
+                videoPlayer.pause(); // Stop video playback when modal is closed
+                videoPlayer.currentTime = 0; // Reset video to the start
             });
         });
-
-        videoModal.addEventListener("hidden.bs.modal", function() {
-            videoPlayer.pause(); // Stop video playback when modal is closed
-            videoPlayer.currentTime = 0; // Reset video to the start
-        });
-    });
-</script>
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
