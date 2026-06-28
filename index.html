@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rohan George | Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-</head>
 <style>
     .card-img-top {
         width: 100%;
@@ -19,6 +20,7 @@
         /* Ensures all cards have equal height */
         display: flex;
         flex-direction: column;
+        position: relative;
     }
 
     .card-body {
@@ -40,34 +42,85 @@
         gap: 5px;
         /* Keeps buttons from sticking together */
     }
+
+    .project-type-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        z-index: 2;
+        padding: 5px 10px;
+        border-radius: 999px;
+        color: #FFFFFF;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+    }
+
+    .project-type-product {
+        background: #0d6efd;
+    }
+
+    .project-type-utility {
+        background: #198754;
+    }
+
+    .project-type-video-game {
+        background: #343a40;
+    }
 </style>
 
-    <!-- Filter script -->
+<!-- Filter script -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const checkboxes = document.querySelectorAll(".skill-checkbox");
+        const skillCheckboxes = document.querySelectorAll(".skill-checkbox");
+        const projectTypeMenu = document.getElementById("projectTypeMenu");
         const clearFilter = document.getElementById("clearFilter");
 
-        checkboxes.forEach(checkbox => {
+        populateProjectTypeFilter();
+
+        const typeCheckboxes = document.querySelectorAll(".project-type-checkbox");
+        const allCheckboxes = [...skillCheckboxes, ...typeCheckboxes];
+
+        allCheckboxes.forEach(checkbox => {
             checkbox.addEventListener("change", filterProjects);
         });
 
         clearFilter.addEventListener("click", function () {
-            checkboxes.forEach(checkbox => checkbox.checked = false);
+            allCheckboxes.forEach(checkbox => checkbox.checked = false);
             filterProjects();
         });
 
+        function populateProjectTypeFilter() {
+            const projectTypes = [...new Set(Array.from(document.querySelectorAll(".project-type-badge"))
+                .map(badge => badge.textContent.trim()))].sort();
+
+            projectTypeMenu.innerHTML = projectTypes.map(type => `
+                <li>
+                    <label class="dropdown-item px-0">
+                        <input type="checkbox" class="project-type-checkbox" value="${type}"> ${type}
+                    </label>
+                </li>
+            `).join("");
+        }
+
         function filterProjects() {
-            let selectedSkills = Array.from(checkboxes)
+            let selectedSkills = Array.from(skillCheckboxes)
                                       .filter(checkbox => checkbox.checked)
                                       .map(checkbox => checkbox.value);
-            let projects = document.querySelectorAll(".col-md-4");
+            let selectedProjectTypes = Array.from(typeCheckboxes)
+                                            .filter(checkbox => checkbox.checked)
+                                            .map(checkbox => checkbox.value);
+            let projects = document.querySelectorAll("#games .col-md-4");
 
             projects.forEach(project => {
-                let projectSkills = Array.from(project.querySelectorAll(".badge"))
+                let projectSkills = Array.from(project.querySelectorAll(".badge:not(.project-type-badge)"))
                                          .map(badge => badge.textContent.trim());
+                let projectType = project.querySelector(".project-type-badge")?.textContent.trim();
+                let matchesSkills = selectedSkills.length === 0 || selectedSkills.some(skill => projectSkills.includes(skill));
+                let matchesType = selectedProjectTypes.length === 0 || selectedProjectTypes.includes(projectType);
 
-                if (selectedSkills.length === 0 || selectedSkills.some(skill => projectSkills.includes(skill))) {
+                if (matchesSkills && matchesType) {
                     project.style.display = "block";
                 } else {
                     project.style.display = "none";
@@ -76,6 +129,7 @@
         }
     });
 </script>
+</head>
 
 <body>
 
@@ -84,14 +138,15 @@
         <div class="row align-items-center">
             <!-- Profile Image -->
             <div class="col-md-3 text-center">
-                <img src="Images/Rohan.jpeg" alt="Profile Picture" class="img-fluid rounded-circle"
+                <img src="Images/Rohan.jpeg" alt="Rohan George profile photo" class="img-fluid rounded-circle"
                     style="max-width: 250px; height: auto; border: 5px solid #FFFFFF; ">
             </div>
 
             <!-- Profile Details -->
             <div class="col-md-9">
                 <h1 class="fw-bold">Rohan George</h1>
-                <p class="lead mb-2">Aspiring Video Game Developer and Producer | Delivery Manager | Tech Enthusiast</p>
+                <p class="lead mb-2">Product &amp; Program Manager</p>
+                <p class="mb-2 pe-md-5" style="max-width: 900px;">Passionate about consumer behaviour, psychology, technology and marketing. I enjoy building products, leading complex programs, and understanding why people make the decisions they do.</p>
                 <p class="mb-1"><strong>Education:</strong></p>
                 <ul class="list-unstyled">
                     <li>B.Tech - Electrical and Electronics Engineering, Mar Athanasius College of Engineering</li>
@@ -109,7 +164,7 @@
         <ul class="nav nav-tabs" id="portfolioTabs" role="tablist">
             <li class="nav-item">
                 <button class="nav-link active" id="games-tab" data-bs-toggle="tab" data-bs-target="#games"
-                    role="tab">Game Projects</button>
+                    role="tab">Projects</button>
             </li>
             <li class="nav-item">
                 <button class="nav-link" id="experience-tab" data-bs-toggle="tab" data-bs-target="#experience"
@@ -122,7 +177,7 @@
 
 
                 <!-- Filter Dropdown (Right-Aligned) -->
-                <div class="d-flex justify-content-end mb-3">
+                <div class="d-flex justify-content-end flex-wrap gap-2 mb-3">
                     <div class="dropdown">
                         <button class="btn btn-outline-primary dropdown-toggle" type="button" id="skillDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             Filter by Tech
@@ -135,7 +190,13 @@
                             <li><input type="checkbox" class="skill-checkbox" value="Light Component"> Light</li>
                         </ul>
                     </div>
-                    <button id="clearFilter" class="btn btn-link ms-2">Clear Filter</button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="projectTypeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filter by Project Type
+                        </button>
+                        <ul class="dropdown-menu p-3" id="projectTypeMenu" aria-labelledby="projectTypeDropdown"></ul>
+                    </div>
+                    <button id="clearFilter" class="btn btn-link">Clear Filter</button>
                 </div>
                 
                 
@@ -143,11 +204,48 @@
                 <div class="row g-4">
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/StickManHeist.PNG" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-product">Product</span>
+                            <img src="Images/ProjectTimelineTool.png" class="card-img-top" alt="Project Timeline Tool screenshot">
+                            <div class="card-body">
+                                <h5 class="card-title">Project Timeline Tool</h5>
+                                <p class="card-text">A super fast and light offline timeline tool for project managers who live on Excel. Improves your work without replacing your tools.</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">C#</span>
+                                </div>
+                                <div class="card-buttons">
+                                    <button type="button" class="btn btn-secondary" disabled>In Progress</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <span class="project-type-badge project-type-utility">Utility</span>
+                            <img src="Images/FormFiller.png" class="card-img-top" alt="Form Filler screenshot placeholder">
+                            <div class="card-body">
+                                <h5 class="card-title">Form Filler</h5>
+                                <p class="card-text">A form-filling utility that stores reusable information for forms such as Workday, drastically reducing form filling times by over 90%.</p>
+                                <!-- Skills Tags -->
+                                <div class="mb-3">
+                                    Technology:
+                                    <span class="badge bg-primary rounded-pill">JavaScript</span>
+                                </div>
+                                <div class="card-buttons">
+                                    <a href="#" class="btn btn-primary">View Code</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/StickManHeist.PNG" class="card-img-top" alt="Stick Man Heist gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">Stick Man Heist</h5>
                                 <p class="card-text">My first game jam project - a stealth game following the theme
-                                    'Avoid the Light'. Play and try to steal the painting without getting caught."</p>
+                                    "Avoid the Light." Play and try to steal the painting without getting caught.</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
@@ -164,7 +262,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/ArrayJumper.png" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/ArrayJumper.png" class="card-img-top" alt="Array Jumper gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">Array Jumper</h5>
                                 <p class="card-text">A logic-based platformer where your protagonist navigates obstacles using arrays as stepping stones. Strategically manipulate arrays to reach the finish line!</p>
@@ -186,7 +285,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/SpaceInvader.jpeg" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/SpaceInvader.jpeg" class="card-img-top" alt="Space Invaders gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">Space Invaders</h5>
                                 <p class="card-text">A modern remake of the classic Space Invaders game, developed as
@@ -206,7 +306,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/HuntTheDuck.PNG" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/HuntTheDuck.PNG" class="card-img-top" alt="Hunt the Ducks gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">Hunt the Ducks</h5>
                                 <p class="card-text">A modern remake of the classic game "Duck Hunt," developed as part
@@ -226,7 +327,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/2DPlatformer.PNG" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/2DPlatformer.PNG" class="card-img-top" alt="2D Platformer gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">2D Platformer</h5>
                                 <p class="card-text">A 2D platformer game made using Unity. You can control an
@@ -246,10 +348,11 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/Snake2D.PNG" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/Snake2D.PNG" class="card-img-top" alt="Snake Co-Op 2D gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">Snake Co-Op 2D</h5>
-                                <p class="card-text">A modern remake of the classic "Snake"" game with the added feature
+                                <p class="card-text">A modern remake of the classic "Snake" game with the added feature
                                     to compete against a friend in Co-Op mode.</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
@@ -266,11 +369,12 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card">
-                            <img src="Images/PingPong.png" class="card-img-top" alt="Game Image">
+                            <span class="project-type-badge project-type-video-game">Video Game</span>
+                            <img src="Images/PingPong.png" class="card-img-top" alt="Ping Pong gameplay screenshot">
                             <div class="card-body">
                                 <h5 class="card-title">Ping Pong</h5>
-                                <p class="card-text">Remake fo the classic Ping Pong game using SFML. Play with your
-                                    friend and see who is the Ping Pong Master!"</p>
+                                <p class="card-text">Remake of the classic Ping Pong game using SFML. Play with your
+                                    friend and see who is the Ping Pong Master!</p>
                                 <!-- Skills Tags -->
                                 <div class="mb-3">
                                     Technology:
@@ -320,13 +424,13 @@
                         </div>
                         <!-- Role 0 -->
                         <h6 class="fw-bold">PMO - IT Procurement Strategy</h6>
-                        <p class="text-muted">November 2024 � Present</p>
+                        <p class="text-muted">November 2024 - Present</p>
                         <ul>
                             <li>Working as the PMO for the IT Procurement Strategy team at Unilever</li>
                             <li>Oversee the overall program management for 4 strategic programs aimed at optimizing
                                 procurement operations</li>
                             <li>Familiar with budgeting and financial oversight for programs with a total value of
-                                approximately �6 million</li>
+                                approximately GBP 6 million</li>
                         </ul>
 
                         <!-- Separator Line -->
@@ -334,7 +438,7 @@
 
                         <!-- Role 1 -->
                         <h6 class="fw-bold">AI/ML Operations Manager</h6>
-                        <p class="text-muted">April 2024 � October 2024</p>
+                        <p class="text-muted">April 2024 - October 2024</p>
                         <ul>
                             <li>Lead cross-functional operations for an AI/ML-based forecasting tool, enhancing demand
                                 planning processes.</li>
@@ -349,7 +453,7 @@
 
                         <!-- Role 2 -->
                         <h6 class="fw-bold">Product/Technical Delivery Manager</h6>
-                        <p class="text-muted">June 2023 � March 2024</p>
+                        <p class="text-muted">June 2023 - March 2024</p>
                         <ul>
                             <li>Served as the Delivery Manager for an AI/ML Forecasting project for UKI, DACH, and
                                 France regions.</li>
@@ -388,7 +492,7 @@
                         </span>
 
                         <!-- Role and Company -->
-                        <h5 class="card-title">Account Lead � Delivery Manager</h5>
+                        <h5 class="card-title">Account Lead - Delivery Manager</h5>
                         <h6 class="card-subtitle mb-3 text-primary">Company: Indegene, Client: Boehringer Ingelheim</h6>
 
                         <!-- Technology and Skills -->
@@ -408,7 +512,7 @@
                             <li>Established the Offshore Delivery Manager role for web and portal Go-To-Market solutions
                                 within 30 days.</li>
                             <li>Served as internal product owner for client engagement, content, design, development,
-                                and regulatory approvals; handled a portfolio of �720K in FY 22-23.</li>
+                                and regulatory approvals; handled a portfolio of GBP 720K in FY 22-23.</li>
                             <li>Hands-on experience with Veeva PromoMats, MedComms, and end-to-end Medical Legal &
                                 Regulatory review processes.</li>
                             <li>Drove process improvements, reducing cycle times, improving requirement gathering, and
