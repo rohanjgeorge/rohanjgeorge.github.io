@@ -70,6 +70,57 @@
     }
 </style>
 
+<!-- Analytics setup -->
+<script>
+    const ANALYTICS_CONFIG = {
+        ga4MeasurementId: "G-XXXXXXXXXX",
+        clarityProjectId: "CLARITY_PROJECT_ID"
+    };
+
+    (function initializeAnalytics() {
+        const hasGa4Id = ANALYTICS_CONFIG.ga4MeasurementId && ANALYTICS_CONFIG.ga4MeasurementId !== "G-XXXXXXXXXX";
+        const hasClarityId = ANALYTICS_CONFIG.clarityProjectId && ANALYTICS_CONFIG.clarityProjectId !== "CLARITY_PROJECT_ID";
+
+        if (hasGa4Id) {
+            const gaScript = document.createElement("script");
+            gaScript.async = true;
+            gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.ga4MeasurementId}`;
+            document.head.appendChild(gaScript);
+
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () {
+                window.dataLayer.push(arguments);
+            };
+
+            window.gtag("js", new Date());
+            window.gtag("config", ANALYTICS_CONFIG.ga4MeasurementId);
+        }
+
+        if (hasClarityId) {
+            (function (c, l, a, r, i, t, y) {
+                c[a] = c[a] || function () {
+                    (c[a].q = c[a].q || []).push(arguments);
+                };
+                t = l.createElement(r);
+                t.async = 1;
+                t.src = "https://www.clarity.ms/tag/" + i;
+                y = l.getElementsByTagName(r)[0];
+                y.parentNode.insertBefore(t, y);
+            })(window, document, "clarity", "script", ANALYTICS_CONFIG.clarityProjectId);
+        }
+    })();
+
+    function portfolioTrack(eventName, eventParams = {}) {
+        if (typeof window.gtag === "function") {
+            window.gtag("event", eventName, eventParams);
+        }
+
+        if (typeof window.clarity === "function") {
+            window.clarity("event", eventName);
+        }
+    }
+</script>
+
 <!-- Filter script -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -83,12 +134,20 @@
         const allCheckboxes = [...skillCheckboxes, ...typeCheckboxes];
 
         allCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", filterProjects);
+            checkbox.addEventListener("change", function () {
+                filterProjects();
+                portfolioTrack("filter_changed", {
+                    filter_category: checkbox.classList.contains("project-type-checkbox") ? "Project Type" : "Technology",
+                    filter_value: checkbox.value,
+                    selected: checkbox.checked
+                });
+            });
         });
 
         clearFilter.addEventListener("click", function () {
             allCheckboxes.forEach(checkbox => checkbox.checked = false);
             filterProjects();
+            portfolioTrack("filters_cleared");
         });
 
         function populateProjectTypeFilter() {
@@ -126,6 +185,133 @@
                     project.style.display = "none";
                 }
             });
+        }
+
+        setupPortfolioEventTracking();
+
+        updateExperienceDurations();
+
+        function setupPortfolioEventTracking() {
+            setupScrollDepthTracking();
+
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener("click", function () {
+                    portfolioTrack("tab_clicked", {
+                        tab_name: this.textContent.trim()
+                    });
+                });
+            });
+
+            document.querySelectorAll("#games .card-buttons a").forEach(link => {
+                link.addEventListener("click", function () {
+                    const project = getProjectDetails(this);
+
+                    portfolioTrack("project_link_clicked", {
+                        project_name: project.name,
+                        project_type: project.type,
+                        link_text: this.textContent.trim(),
+                        link_url: this.href
+                    });
+                });
+            });
+
+            document.querySelectorAll("#games .play-video-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const project = getProjectDetails(this);
+
+                    portfolioTrack("project_video_clicked", {
+                        project_name: project.name,
+                        project_type: project.type,
+                        video_url: this.getAttribute("data-video")
+                    });
+                });
+            });
+        }
+
+        function setupScrollDepthTracking() {
+            const trackedDepths = new Set();
+            const depthMarkers = [25, 50, 75, 100];
+
+            window.addEventListener("scroll", function () {
+                const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                if (scrollableHeight <= 0) {
+                    return;
+                }
+
+                const scrollDepth = Math.round((window.scrollY / scrollableHeight) * 100);
+
+                depthMarkers.forEach(marker => {
+                    if (scrollDepth >= marker && !trackedDepths.has(marker)) {
+                        trackedDepths.add(marker);
+                        portfolioTrack("scroll_depth_reached", {
+                            percent_scrolled: marker
+                        });
+                    }
+                });
+            }, { passive: true });
+        }
+
+        function getProjectDetails(element) {
+            const card = element.closest(".card");
+
+            return {
+                name: card?.querySelector(".card-title")?.textContent.trim() || "Unknown Project",
+                type: card?.querySelector(".project-type-badge")?.textContent.trim() || "Uncategorized"
+            };
+        }
+
+        function updateExperienceDurations() {
+            const experienceCards = document.querySelectorAll(".experience-card");
+            let totalMonths = 0;
+
+            experienceCards.forEach(card => {
+                const start = parseMonth(card.dataset.start);
+                const end = card.dataset.current === "true" ? currentMonth() : parseMonth(card.dataset.end);
+                const months = getInclusiveMonthDiff(start, end);
+                const durationBadge = card.querySelector(".experience-duration");
+
+                totalMonths += months;
+
+                if (durationBadge) {
+                    durationBadge.textContent = `Duration: ${formatDuration(months)}`;
+                }
+            });
+
+            const totalExperience = document.getElementById("totalExperience");
+            if (totalExperience) {
+                totalExperience.textContent = `Total Experience: ${formatDuration(totalMonths)}`;
+            }
+        }
+
+        function parseMonth(value) {
+            const [year, month] = value.split("-").map(Number);
+            return { year, month };
+        }
+
+        function currentMonth() {
+            const today = new Date();
+            return { year: today.getFullYear(), month: today.getMonth() + 1 };
+        }
+
+        function getInclusiveMonthDiff(start, end) {
+            return ((end.year - start.year) * 12) + (end.month - start.month) + 1;
+        }
+
+        function formatDuration(totalMonths) {
+            const years = Math.floor(totalMonths / 12);
+            const months = totalMonths % 12;
+            const parts = [];
+
+            if (years > 0) {
+                parts.push(`${years} ${years === 1 ? "Year" : "Years"}`);
+            }
+
+            if (months > 0) {
+                parts.push(`${months} ${months === 1 ? "Month" : "Months"}`);
+            }
+
+            return parts.join(" and ") || "0 Months";
         }
     });
 </script>
@@ -396,16 +582,16 @@
 
             <!-- Professional Experience -->
             <div class="tab-pane fade" id="experience" role="tabpanel">
-                <span class="bg-info text-dark rounded-pill px-3 py-1 mt-2 me-2">
-                    Total Experience: 5 years 8 Months
+                <span id="totalExperience" class="bg-info text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                    Total Experience: 7 Years and 4 Months
                 </span>
                 <br><br>
-                <div class="card mb-4 position-relative">
+                <div class="card mb-4 position-relative experience-card" data-start="2023-05" data-current="true">
                     <div class="card-body">
                         <!-- Total Duration -->
                         <span
-                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
-                            Duration: 1.8 Years
+                            class="experience-duration position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 3 Years and 2 Months
                         </span>
 
                         <!-- Role and Company -->
@@ -483,16 +669,16 @@
                 </div>
 
 
-                <div class="card mb-4 position-relative">
+                <div class="card mb-4 position-relative experience-card" data-start="2022-04" data-end="2023-05">
                     <div class="card-body">
                         <!-- Duration -->
                         <span
-                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
-                            Duration: 1.1 Years
+                            class="experience-duration position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 1 Year and 2 Months
                         </span>
 
                         <!-- Role and Company -->
-                        <h5 class="card-title">Account Lead - Delivery Manager</h5>
+                        <h5 class="card-title">Program Delivery Manager</h5>
                         <h6 class="card-subtitle mb-3 text-primary">Company: Indegene, Client: Boehringer Ingelheim</h6>
 
                         <!-- Technology and Skills -->
@@ -538,12 +724,12 @@
                 </div>
 
 
-                <div class="card mb-4 position-relative">
+                <div class="card mb-4 position-relative experience-card" data-start="2021-04" data-end="2022-03">
                     <div class="card-body">
                         <!-- Duration -->
                         <span
-                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
-                            Duration: 11 Months
+                            class="experience-duration position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            Duration: 1 Year
                         </span>
 
                         <!-- Role and Company -->
@@ -588,11 +774,11 @@
                 </div>
 
 
-                <div class="card mb-4">
+                <div class="card mb-4 position-relative experience-card" data-start="2019-04" data-end="2021-03">
                     <div class="card-body">
                         <!-- Duration -->
                         <span
-                            class="position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
+                            class="experience-duration position-absolute top-0 end-0 bg-warning text-dark rounded-pill px-3 py-1 mt-2 me-2">
                             Duration: 2 Years
                         </span>
 
